@@ -1,0 +1,172 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --matrix-green: #00FF41;
+  --matrix-dark-green: #003B00;
+  --matrix-light-green: #39FF14;
+  --matrix-blue: #0D7377;
+  --matrix-black: #0D0208;
+  --matrix-gray: #1A1A1A;
+}
+
+body {
+  margin: 0;
+  background-color: var(--matrix-black);
+  color: var(--matrix-green);
+  font-family: 'JetBrains Mono', monospace;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: repeating-linear-gradient(
+    transparent,
+    transparent 2px,
+    rgba(0, 0, 0, 0.05) 2px,
+    rgba(0, 0, 0, 0.05) 4px
+  );
+  pointer-events: none;
+  z-index: 100;
+  opacity: 0.3;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--matrix-black);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--matrix-dark-green);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--matrix-green);
+}
+
+/* Terminal blinking cursor effect */
+.cursor-blink {
+  border-right: 2px solid var(--matrix-green);
+  animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+  from, to {
+    border-color: transparent;
+  }
+  50% {
+    border-color: var(--matrix-green);
+  }
+}
+
+/* Glitch effect */
+.glitch {
+  position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.glitch::before {
+  left: 2px;
+  text-shadow: -1px 0 var(--matrix-light-green);
+  clip: rect(24px, 550px, 90px, 0);
+  animation: glitch-anim-1 5s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+  left: -2px;
+  text-shadow: -1px 0 var(--matrix-blue);
+  clip: rect(85px, 550px, 140px, 0);
+  animation: glitch-anim-2 5s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+  0% {
+    clip: rect(22px, 550px, 59px, 0);
+  }
+  20% {
+    clip: rect(18px, 550px, 46px, 0);
+  }
+  40% {
+    clip: rect(42px, 550px, 78px, 0);
+  }
+  60% {
+    clip: rect(12px, 550px, 33px, 0);
+  }
+  80% {
+    clip: rect(62px, 550px, 98px, 0);
+  }
+  100% {
+    clip: rect(24px, 550px, 71px, 0);
+  }
+}
+
+@keyframes glitch-anim-2 {
+  0% {
+    clip: rect(63px, 550px, 100px, 0);
+  }
+  20% {
+    clip: rect(28px, 550px, 55px, 0);
+  }
+  40% {
+    clip: rect(76px, 550px, 91px, 0);
+  }
+  60% {
+    clip: rect(33px, 550px, 68px, 0);
+  }
+  80% {
+    clip: rect(15px, 550px, 39px, 0);
+  }
+  100% {
+    clip: rect(53px, 550px, 84px, 0);
+  }
+}
+
+@layer components {
+  .matrix-button {
+    @apply px-6 py-3 border-2 border-matrix-green bg-transparent 
+    text-matrix-green hover:bg-matrix-green hover:text-black 
+    transition-all duration-300 relative overflow-hidden
+    focus:outline-none focus:ring-2 focus:ring-matrix-light-green focus:ring-opacity-50;
+  }
+
+  .matrix-button::before {
+    content: '';
+    @apply absolute top-0 left-0 w-full h-full bg-matrix-green 
+    transform scale-x-0 origin-right transition-transform duration-300;
+    z-index: -1;
+  }
+
+  .matrix-button:hover::before {
+    @apply transform scale-x-100 origin-left;
+  }
+
+  .section-heading {
+    @apply text-3xl md:text-4xl lg:text-5xl font-bold mb-8 text-matrix-green relative;
+  }
+
+  .section-container {
+    @apply max-w-7xl mx-auto px-4 py-16 md:py-24;
+  }
+}
